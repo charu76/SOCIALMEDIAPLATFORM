@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block title %}Edit profile - MiniSocial{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3>Edit profile</h3>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label>Bio</label>
+      {{ form.bio.errors }}
+      {{ form.bio }}
+      <label>Avatar</label>
+      {{ form.avatar.errors }}
+      {{ form.avatar }}
+      <button class="btn" type="submit">Save</button>
+    </form>
+  </div>
+{% endblock %}

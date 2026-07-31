@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}Post - MiniSocial{% endblock %}
+{% block content %}
+  {% include "core/partials/post_card.html" %}
+
+  <div class="card" id="comments">
+    <h4>Comments</h4>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.content.errors }}
+      {{ form.content }}
+      <button class="btn small" type="submit">Comment</button>
+    </form>
+
+    {% for comment in comments %}
+      <div class="comment">
+        <a href="{% url 'profile' comment.author.username %}" class="avatar small">
+          {{ comment.author.username|first|upper }}
+        </a>
+        <div class="bubble">
+          <strong>{{ comment.author.username }}</strong> {{ comment.content }}
+          <div class="time">{{ comment.created_at|date:"M d, Y H:i" }}</div>
+        </div>
+        {% if comment.author == request.user %}
+          <form class="del" action="{% url 'comment_delete' comment.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">✕</button>
+          </form>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p class="muted">No comments yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

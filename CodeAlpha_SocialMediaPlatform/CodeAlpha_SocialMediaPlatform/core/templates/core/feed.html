@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+{% block title %}Feed - MiniSocial{% endblock %}
+{% block content %}
+  <div class="card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {{ form.content.errors }}
+      {{ form.content }}
+      {{ form.image.errors }}
+      {{ form.image }}
+      <button class="btn" type="submit">Post</button>
+    </form>
+  </div>
+
+  <h3>Your feed</h3>
+  {% if posts %}
+    {% for post in posts %}
+      {% include "core/partials/post_card.html" %}
+    {% endfor %}
+  {% else %}
+    <p class="empty">No posts yet. Follow people from <a href="{% url 'explore' %}">Explore</a> or write your first post above!</p>
+  {% endif %}
+{% endblock %}

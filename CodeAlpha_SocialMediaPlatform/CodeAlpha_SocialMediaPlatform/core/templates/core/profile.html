@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+{% block title %}{{ profile_user.username }} - MiniSocial{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="profile-header">
+      <div class="avatar">
+        {% if profile_user.profile.avatar %}
+          <img src="{{ profile_user.profile.avatar.url }}" alt="">
+        {% else %}
+          {{ profile_user.username|first|upper }}
+        {% endif %}
+      </div>
+      <div>
+        <h2 style="margin:0;">{{ profile_user.username }}</h2>
+        {% if profile_user.profile.bio %}<p class="muted" style="margin:4px 0;">{{ profile_user.profile.bio }}</p>{% endif %}
+      </div>
+      {% if profile_user == request.user %}
+        <a class="btn outline small" style="margin-left:auto;" href="{% url 'profile_edit' %}">Edit profile</a>
+      {% else %}
+        <form action="{% url 'follow_toggle' profile_user.username %}" method="post" style="margin-left:auto;">
+          {% csrf_token %}
+          <button class="btn {% if is_following %}outline{% endif %} small" type="submit">
+            {% if is_following %}Unfollow{% else %}Follow{% endif %}
+          </button>
+        </form>
+      {% endif %}
+    </div>
+    <div class="profile-stats">
+      <span>{{ posts|length }} posts</span>
+      <a href="{% url 'followers' profile_user.username %}">{{ profile_user.profile.follower_count }} followers</a>
+      <a href="{% url 'following' profile_user.username %}">{{ profile_user.profile.following_count }} following</a>
+    </div>
+  </div>
+
+  {% for post in posts %}
+    {% include "core/partials/post_card.html" %}
+  {% empty %}
+    <p class="empty">No posts yet.</p>
+  {% endfor %}
+{% endblock %}

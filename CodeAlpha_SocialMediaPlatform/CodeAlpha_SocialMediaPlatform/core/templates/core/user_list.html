@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% block title %}{{ title }} - MiniSocial{% endblock %}
+{% block content %}
+  <div class="card">
+    <h3>{{ title }}</h3>
+    {% for u in users %}
+      <div class="user-row">
+        <a href="{% url 'profile' u.username %}" class="avatar small">{{ u.username|first|upper }}</a>
+        <a href="{% url 'profile' u.username %}">{{ u.username }}</a>
+      </div>
+    {% empty %}
+      <p class="empty">Nobody here yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

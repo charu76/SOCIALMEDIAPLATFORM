@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+{% block title %}Explore - MiniSocial{% endblock %}
+{% block content %}
+  <h3>Explore</h3>
+  {% if posts %}
+    {% for post in posts %}
+      {% include "core/partials/post_card.html" %}
+    {% endfor %}
+  {% else %}
+    <p class="empty">Nothing to explore yet.</p>
+  {% endif %}
+{% endblock %}
